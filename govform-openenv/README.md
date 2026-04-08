@@ -1,10 +1,9 @@
 ---
-title: GovForm Assistant
-emoji: 🏛️
-colorFrom: indigo
-colorTo: blue
+title: Govform Assist
 sdk: docker
-pinned: false
+emoji: 🏛️
+colorFrom: blue
+colorTo: indigo
 app_port: 7860
 ---
 
