@@ -1,0 +1,149 @@
+{
+  "form_id": "income_certificate",
+  "title": "Income Certificate Application",
+  "fields": [
+    {
+      "name": "applicant_name",
+      "label": "Applicant full name",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[A-Za-z ]{2,100}$",
+        "error": "Name must be 2\u2013100 letters and spaces only."
+      }
+    },
+    {
+      "name": "father_name",
+      "label": "Father's / Guardian's name",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[A-Za-z ]{2,100}$",
+        "error": "Name must be 2\u2013100 letters and spaces only."
+      }
+    },
+    {
+      "name": "date_of_birth",
+      "label": "Date of birth (YYYY-MM-DD)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+        "error": "Date must be in YYYY-MM-DD format."
+      }
+    },
+    {
+      "name": "address",
+      "label": "Residential address",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^.{10,300}$",
+        "error": "Address must be 10\u2013300 characters."
+      }
+    },
+    {
+      "name": "annual_income",
+      "label": "Annual income in INR",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[0-9]+$",
+        "error": "Annual income must be a positive integer."
+      }
+    },
+    {
+      "name": "certificate_type",
+      "label": "Certificate type",
+      "required": true,
+      "validation": {
+        "type": "enum",
+        "values": ["BPL", "EWS", "General"],
+        "error": "Certificate type must be BPL, EWS, or General."
+      }
+    },
+    {
+      "name": "employment_type",
+      "label": "Employment type",
+      "required": true,
+      "validation": {
+        "type": "enum",
+        "values": ["Salaried", "Self-Employed", "Unemployed", "Retired", "Student"],
+        "error": "Employment type must be one of: Salaried, Self-Employed, Unemployed, Retired, Student."
+      }
+    },
+    {
+      "name": "employer_name",
+      "label": "Employer name (if applicable)",
+      "required": false,
+      "validation": {
+        "type": "regex",
+        "pattern": "^.{2,150}$",
+        "error": "Employer name must be 2\u2013150 characters."
+      }
+    },
+    {
+      "name": "state",
+      "label": "State / Union Territory",
+      "required": true,
+      "validation": {
+        "type": "enum",
+        "values": [
+          "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
+          "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh",
+          "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh",
+          "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
+          "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+          "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand",
+          "West Bengal",
+          "Andaman and Nicobar Islands", "Chandigarh",
+          "Dadra and Nagar Haveli and Daman and Diu", "Delhi",
+          "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+        ],
+        "error": "State must be a valid Indian state or Union Territory."
+      }
+    },
+    {
+      "name": "mobile_number",
+      "label": "Mobile number (10 digits)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[6-9][0-9]{9}$",
+        "error": "Mobile number must be 10 digits starting with 6\u20139."
+      }
+    }
+  ],
+  "cross_field_rules": [
+    {
+      "id": "bpl_income_cap",
+      "description": "If certificate_type is BPL, annual_income must be less than 300000.",
+      "condition_field": "certificate_type",
+      "condition_value": "BPL",
+      "target_field": "annual_income",
+      "rule": "less_than",
+      "rule_value": 300000,
+      "error": "For BPL certificate, annual income must be below 3,00,000 INR."
+    },
+    {
+      "id": "ews_income_cap",
+      "description": "If certificate_type is EWS, annual_income must be less than 800000.",
+      "condition_field": "certificate_type",
+      "condition_value": "EWS",
+      "target_field": "annual_income",
+      "rule": "less_than",
+      "rule_value": 800000,
+      "error": "For EWS certificate, annual income must be below 8,00,000 INR."
+    },
+    {
+      "id": "employer_required_if_salaried",
+      "description": "If employment_type is Salaried, employer_name must be provided.",
+      "condition_field": "employment_type",
+      "condition_value": "Salaried",
+      "target_field": "employer_name",
+      "rule": "not_empty",
+      "rule_value": null,
+      "error": "Employer name is required when employment type is Salaried."
+    }
+  ]
+}

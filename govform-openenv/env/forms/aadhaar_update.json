@@ -1,0 +1,77 @@
+{
+  "form_id": "aadhaar_update",
+  "title": "Aadhaar Address Update",
+  "fields": [
+    {
+      "name": "full_name",
+      "label": "Full name (as on Aadhaar)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[A-Za-z ]{2,100}$",
+        "error": "Name must be 2\u2013100 letters and spaces only."
+      }
+    },
+    {
+      "name": "aadhaar_number",
+      "label": "12-digit Aadhaar number",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[0-9]{12}$",
+        "error": "Aadhaar number must be exactly 12 digits."
+      }
+    },
+    {
+      "name": "new_address_line1",
+      "label": "New address line 1",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^.{5,200}$",
+        "error": "Address line 1 must be 5\u2013200 characters."
+      }
+    },
+    {
+      "name": "new_pincode",
+      "label": "New PIN code (6 digits)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[1-9][0-9]{5}$",
+        "error": "PIN code must be a valid 6-digit code not starting with 0."
+      }
+    },
+    {
+      "name": "state",
+      "label": "State / Union Territory",
+      "required": true,
+      "validation": {
+        "type": "enum",
+        "values": [
+          "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
+          "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh",
+          "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh",
+          "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
+          "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+          "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand",
+          "West Bengal",
+          "Andaman and Nicobar Islands", "Chandigarh",
+          "Dadra and Nagar Haveli and Daman and Diu", "Delhi",
+          "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+        ],
+        "error": "State must be a valid Indian state or Union Territory."
+      }
+    },
+    {
+      "name": "mobile_number",
+      "label": "Mobile number (10 digits)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[6-9][0-9]{9}$",
+        "error": "Mobile number must be 10 digits starting with 6\u20139."
+      }
+    }
+  ]
+}

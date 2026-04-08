@@ -1,0 +1,175 @@
+{
+  "form_id": "passport_renewal",
+  "title": "Passport Renewal Application",
+  "fields": [
+    {
+      "name": "applicant_name",
+      "label": "Applicant full name (as on passport)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[A-Za-z ]{2,100}$",
+        "error": "Name must be 2\u2013100 letters and spaces only."
+      }
+    },
+    {
+      "name": "date_of_birth",
+      "label": "Date of birth (YYYY-MM-DD)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+        "error": "Date must be in YYYY-MM-DD format."
+      }
+    },
+    {
+      "name": "application_date",
+      "label": "Application date (YYYY-MM-DD)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+        "error": "Date must be in YYYY-MM-DD format."
+      }
+    },
+    {
+      "name": "existing_passport_number",
+      "label": "Existing passport number",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[A-Z][0-9]{7}$",
+        "error": "Passport number must be 1 uppercase letter followed by 7 digits."
+      }
+    },
+    {
+      "name": "existing_passport_expiry",
+      "label": "Existing passport expiry date (YYYY-MM-DD)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+        "error": "Date must be in YYYY-MM-DD format."
+      }
+    },
+    {
+      "name": "place_of_birth",
+      "label": "Place of birth",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[A-Za-z ]{2,100}$",
+        "error": "Place of birth must be 2\u2013100 letters and spaces."
+      }
+    },
+    {
+      "name": "address",
+      "label": "Current residential address",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^.{10,300}$",
+        "error": "Address must be 10\u2013300 characters."
+      }
+    },
+    {
+      "name": "pincode",
+      "label": "PIN code (6 digits)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[1-9][0-9]{5}$",
+        "error": "PIN code must be a valid 6-digit code not starting with 0."
+      }
+    },
+    {
+      "name": "mobile_number",
+      "label": "Mobile number (10 digits)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[6-9][0-9]{9}$",
+        "error": "Mobile number must be 10 digits starting with 6\u20139."
+      }
+    },
+    {
+      "name": "email",
+      "label": "Email address",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+        "error": "Must be a valid email address."
+      }
+    },
+    {
+      "name": "emergency_contact_name",
+      "label": "Emergency contact name",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[A-Za-z ]{2,100}$",
+        "error": "Name must be 2\u2013100 letters and spaces only."
+      }
+    },
+    {
+      "name": "emergency_contact_phone",
+      "label": "Emergency contact phone (10 digits)",
+      "required": true,
+      "validation": {
+        "type": "regex",
+        "pattern": "^[6-9][0-9]{9}$",
+        "error": "Phone number must be 10 digits starting with 6\u20139."
+      }
+    },
+    {
+      "name": "renewal_reason",
+      "label": "Reason for renewal",
+      "required": true,
+      "validation": {
+        "type": "enum",
+        "values": ["Expiry", "Damaged", "Lost", "Change of Name", "Change of Address", "Additional Pages"],
+        "error": "Reason must be one of: Expiry, Damaged, Lost, Change of Name, Change of Address, Additional Pages."
+      }
+    },
+    {
+      "name": "police_clearance",
+      "label": "Police clearance certificate available (Yes/No)",
+      "required": true,
+      "validation": {
+        "type": "enum",
+        "values": ["Yes", "No"],
+        "error": "Must be Yes or No."
+      }
+    }
+  ],
+  "cross_field_rules": [
+    {
+      "id": "age_minimum_18",
+      "description": "Applicant must be at least 18 years old: date_of_birth must be at least 18 years before application_date.",
+      "field1": "date_of_birth",
+      "field2": "application_date",
+      "rule": "min_age",
+      "rule_value": 18,
+      "error": "Applicant must be at least 18 years old at the time of application."
+    },
+    {
+      "id": "emergency_not_self",
+      "description": "Emergency contact name must not be the same as applicant name.",
+      "field1": "emergency_contact_name",
+      "field2": "applicant_name",
+      "rule": "not_equal",
+      "rule_value": null,
+      "error": "Emergency contact name cannot be the same as the applicant\u2019s name."
+    },
+    {
+      "id": "passport_not_expired_long_ago",
+      "description": "For renewal, existing passport expiry date must not be more than 3 years in the past relative to application_date.",
+      "field1": "existing_passport_expiry",
+      "field2": "application_date",
+      "rule": "max_years_before",
+      "rule_value": 3,
+      "error": "Existing passport must not have expired more than 3 years ago. If it has, apply for a fresh passport instead."
+    }
+  ]
+}

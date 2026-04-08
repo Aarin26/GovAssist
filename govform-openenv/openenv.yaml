@@ -1,0 +1,22 @@
+name: govform-assistant
+version: "1.0.0"
+description: >
+  An AI agent fills Indian government forms (Aadhaar update, income certificate,
+  passport renewal) by interpreting inputs, validating fields, and resolving conflicts.
+tags: [openenv, form-filling, government, india, real-world]
+tasks:
+  - id: aadhaar_update
+    difficulty: easy
+    max_steps: 20
+    description: Fill a 6-field Aadhaar address update form.
+  - id: income_certificate
+    difficulty: medium
+    max_steps: 20
+    description: Fill a 10-field income certificate with cross-field validation rules.
+  - id: passport_renewal
+    difficulty: hard
+    max_steps: 25
+    description: Fill a 14-field passport renewal form and resolve 2 pre-seeded conflicts.
+observation_space: See env/models.py Observation
+action_space: See env/models.py Action
+reward_range: [0.0, 1.0]
