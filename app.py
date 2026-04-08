@@ -99,9 +99,9 @@ def list_tasks():
 
 
 @app.post("/reset")
-def reset(req: ResetRequest):
+def reset(req: Optional[ResetRequest] = None):
     global _env
-    task_id = req.task_id or TASKS[0].id
+    task_id = (req.task_id if req else None) or TASKS[0].id
     valid_ids = {t.id for t in TASKS}
     if task_id not in valid_ids:
         raise HTTPException(
