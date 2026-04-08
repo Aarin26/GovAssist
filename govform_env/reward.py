@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from env.models import Action, FieldStatus, Observation
+from govform_env.models import Action, FieldStatus, Observation
 
 
 def compute_reward(

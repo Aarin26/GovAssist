@@ -7,11 +7,11 @@ from __future__ import annotations
 
 import pytest
 
-from env.environment import GovFormEnv
-from env.graders.task1_aadhaar import AadhaarGrader
-from env.graders.task2_income import IncomeGrader
-from env.graders.task3_passport import PassportGrader
-from env.models import Action, FieldStatus
+from govform_env.environment import GovFormEnv
+from govform_env.graders.task1_aadhaar import AadhaarGrader
+from govform_env.graders.task2_income import IncomeGrader
+from govform_env.graders.task3_passport import PassportGrader
+from govform_env.models import Action, FieldStatus
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────

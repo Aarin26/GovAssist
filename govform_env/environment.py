@@ -8,8 +8,8 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from env.models import Action, FieldStatus, FormField, Observation
-from env.reward import compute_reward
+from govform_env.models import Action, FieldStatus, FormField, Observation
+from govform_env.reward import compute_reward
 
 # Base path for form JSON schemas
 _FORMS_DIR = Path(__file__).resolve().parent / "forms"

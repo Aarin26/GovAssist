@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
-from env.graders.base import BaseGrader
-from env.models import FieldStatus
+from govform_env.graders.base import BaseGrader
+from govform_env.models import FieldStatus
 
 
 class IncomeGrader(BaseGrader):
