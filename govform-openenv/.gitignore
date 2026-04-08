@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.env
+.venv
+env/bin/
+env/lib/
+env/include/
+venv/
+venv.bak/
+.DS_Store
+inference_output.txt
