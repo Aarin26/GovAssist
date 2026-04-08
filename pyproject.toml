@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-openenv-server = "govform_env.server:app"
+openenv-server = "server.app:app"
 
 [build-system]
 requires = ["hatchling"]
