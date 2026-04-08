@@ -8,7 +8,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from govform_env.models import Action, FieldStatus, FormField, Observation
+from govform_env.models import GovFormAction, FieldStatus, FormField, Observation
 from govform_env.reward import compute_reward
 
 # Base path for form JSON schemas
@@ -53,28 +53,28 @@ class GovFormEnv:
         self._cumulative_reward = 0.0
         return self._observation()
 
-    def step(self, action: Action) -> Tuple[Observation, float, bool, dict]:
-        """Process one agent action and return (obs, reward, done, info)."""
+    def step(self, GovFormAction: GovFormAction) -> Tuple[Observation, float, bool, dict]:
+        """Process one agent GovFormAction and return (obs, reward, done, info)."""
         if self._done:
             return self._observation(), 0.0, True, {"message": "Episode already finished."}
 
         prev_obs = self._observation()
         self._step_number += 1
-        self._last_agent_action = f"{action.field_name}={action.value}"
+        self._last_agent_action = f"{GovFormAction.field_name}={GovFormAction.value}"
 
         # 1. Find the target field
-        target = self._field_by_name(action.field_name)
+        target = self._field_by_name(GovFormAction.field_name)
         if target is None:
             self._last_system_message = (
-                f"Field '{action.field_name}' does not exist in this form."
+                f"Field '{GovFormAction.field_name}' does not exist in this form."
             )
             new_obs = self._observation()
-            reward = compute_reward(prev_obs, action, new_obs, self._done)
+            reward = compute_reward(prev_obs, GovFormAction, new_obs, self._done)
             self._cumulative_reward += reward
             return new_obs, reward, self._done, {"error": "unknown_field"}
 
         # 2. Set the value
-        target.value = action.value
+        target.value = GovFormAction.value
 
         # 3. Field-level validation
         self._validate_field(target)
@@ -94,7 +94,7 @@ class GovFormEnv:
         self._done = self._check_done()
 
         new_obs = self._observation()
-        reward = compute_reward(prev_obs, action, new_obs, self._done)
+        reward = compute_reward(prev_obs, GovFormAction, new_obs, self._done)
         self._cumulative_reward += reward
 
         info: Dict[str, Any] = {}

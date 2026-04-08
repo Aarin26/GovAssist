@@ -114,10 +114,10 @@ def reset(req: ResetRequest):
 
 
 @app.post("/step", response_model=StepResponse)
-def step(action: GovFormAction):
+def step(GovFormAction: GovFormAction):
     if _env is None:
         raise HTTPException(status_code=400, detail="Call /reset first.")
-    obs, reward, done, info = _env.step(action)
+    obs, reward, done, info = _env.step(GovFormAction)
     return StepResponse(
         observation=obs.model_dump(),
         reward=reward,

@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from govform_env.models import Action, FieldStatus, Observation
+from govform_env.models import GovFormAction, FieldStatus, Observation
 
 
 def compute_reward(
     prev_obs: Observation,
-    action: Action,
+    GovFormAction: GovFormAction,
     new_obs: Observation,
     done: bool,
 ) -> float:
@@ -38,7 +38,7 @@ def compute_reward(
         new_status[f.name] = f.status
         new_values[f.name] = f.value
 
-    target_field = action.field_name
+    target_field = GovFormAction.field_name
 
     # Penalty: non-existent field
     if target_field not in new_status:
@@ -50,7 +50,7 @@ def compute_reward(
     # Penalty: re-submitting an already-VALID field with the same value
     if (
         prev_status.get(target_field) == FieldStatus.VALID
-        and prev_values.get(target_field) == action.value
+        and prev_values.get(target_field) == GovFormAction.value
     ):
         reward -= 0.03
         if done:

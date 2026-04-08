@@ -15,7 +15,7 @@ MANDATORY
 STDOUT FORMAT
 - The script emits exactly three line types to stdout:
     [START] task=<task_name> env=<benchmark> model=<model_name>
-    [STEP]  step=<n> action=<action_str> reward=<0.00> done=<true|false> error=<msg|null>
+    [STEP]  step=<n> GovFormAction=<action_str> reward=<0.00> done=<true|false> error=<msg|null>
     [END]   success=<true|false> steps=<n> score=<score> rewards=<r1,r2,...,rn>
 """
 
@@ -82,11 +82,11 @@ def log_start(task: str, env: str, model: str) -> None:
     print(f"[START] task={task} env={env} model={model}", flush=True)
 
 
-def log_step(step: int, action: str, reward: float, done: bool, error: Optional[str]) -> None:
+def log_step(step: int, GovFormAction: str, reward: float, done: bool, error: Optional[str]) -> None:
     error_val = error if error else "null"
     done_val = str(done).lower()
     print(
-        f"[STEP] step={step} action={action} reward={reward:.2f} done={done_val} error={error_val}",
+        f"[STEP] step={step} GovFormAction={GovFormAction} reward={reward:.2f} done={done_val} error={error_val}",
         flush=True,
     )
 
@@ -121,7 +121,7 @@ def build_user_prompt(obs: dict) -> str:
         else:
             completed.append(f"  + {f['name']}: {val} [VALID]")
 
-    lines = ["=== FIELDS THAT NEED ACTION ==="] + needs_attention
+    lines = ["=== FIELDS THAT NEED GovFormAction ==="] + needs_attention
     lines += ["\n=== COMPLETED ==="] + completed
     lines.append(f"\nProgress: {obs['valid_count']}/{obs['total_required']} | Step: {obs['step_number']}")
     return "\n".join(lines)
@@ -200,18 +200,18 @@ async def run_task(task_id: str, env: GovFormEnv, llm_client: OpenAI) -> None:
             action_dict = parse_action(raw_text)
 
             if action_dict is None:
-                log_step(step=step_num, action="invalid_json", reward=0.0, done=False, error="json_parse_failed")
+                log_step(step=step_num, GovFormAction="invalid_json", reward=0.0, done=False, error="json_parse_failed")
                 continue
 
-            action = GovFormAction(
+            GovFormAction = GovFormAction(
                 field_name=action_dict["field_name"],
                 value=str(action_dict["value"]),
                 reasoning=action_dict.get("reasoning"),
             )
 
-            action_str = f"{action.field_name}='{action.value}'"
+            action_str = f"{GovFormAction.field_name}='{GovFormAction.value}'"
 
-            step_result = await env.step(action)
+            step_result = await env.step(GovFormAction)
 
             obs_data = step_result.observation
             reward = step_result.reward
@@ -221,7 +221,7 @@ async def run_task(task_id: str, env: GovFormEnv, llm_client: OpenAI) -> None:
             rewards.append(reward)
             steps_taken = step_num
 
-            log_step(step=step_num, action=action_str, reward=reward, done=done, error=error)
+            log_step(step=step_num, GovFormAction=action_str, reward=reward, done=done, error=error)
 
             if done:
                 break

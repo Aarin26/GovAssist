@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 
-from govform_env.models import Action, Observation
+from govform_env.models import GovFormAction, Observation
 
 
 @dataclass
@@ -123,14 +123,14 @@ class GovFormEnv:
         data = resp.json()
         return ResetResult(observation=data)
 
-    async def step(self, action: Action) -> StepResult:
-        """Send an action to the environment."""
+    async def step(self, GovFormAction: GovFormAction) -> StepResult:
+        """Send an GovFormAction to the environment."""
         resp = await self._client.post(
             "/step",
             json={
-                "field_name": action.field_name,
-                "value": action.value,
-                "reasoning": action.reasoning,
+                "field_name": GovFormAction.field_name,
+                "value": GovFormAction.value,
+                "reasoning": GovFormAction.reasoning,
             },
         )
         resp.raise_for_status()
