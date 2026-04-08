@@ -5,6 +5,7 @@ emoji: 🏛️
 colorFrom: blue
 colorTo: indigo
 app_port: 7860
+tags: [openenv]
 ---
 
 # GovForm Assistant — OpenEnv Environment
