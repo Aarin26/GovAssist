@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from govform_env.environment import GovFormEnv
+from govform_env.env import GovFormEnv
 from govform_env.models import GovFormAction, Observation
 
 # ── App setup ─────────────────────────────────────────────────────────────
