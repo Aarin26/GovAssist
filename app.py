@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from govform_env.environment import GovFormEnv
-from govform_env.models import Action, Observation
+from govform_env.models import GovFormAction, Observation
 
 # ── App setup ─────────────────────────────────────────────────────────────
 
@@ -114,7 +114,7 @@ def reset(req: ResetRequest):
 
 
 @app.post("/step", response_model=StepResponse)
-def step(action: Action):
+def step(action: GovFormAction):
     if _env is None:
         raise HTTPException(status_code=400, detail="Call /reset first.")
     obs, reward, done, info = _env.step(action)
