@@ -84,6 +84,15 @@ def health():
     return {"status": "ok"}
 
 
+@app.get("/")
+def home():
+    return {
+        "message": "GovForm OpenEnv is Running!",
+        "endpoints": ["/tasks", "/reset", "/step", "/state", "/health"],
+        "docs": "/docs"
+    }
+
+
 @app.get("/tasks", response_model=List[TaskInfo])
 def list_tasks():
     return TASKS
