@@ -39,7 +39,7 @@ class Observation(BaseModel):
     step_number: int = 0
 
 
-class Action(BaseModel):
+class GovFormAction(BaseModel):
     """What the agent sends to the environment."""
     field_name: str
     value: str

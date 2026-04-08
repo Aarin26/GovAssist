@@ -38,7 +38,7 @@ class ResetResult:
         return self.observation.get("task_id", "")
 
 
-class GovFormEnvClient:
+class GovFormEnv:
     """
     Async HTTP client that wraps the GovForm FastAPI server.
 
@@ -58,7 +58,7 @@ class GovFormEnvClient:
         image_name: str,
         port: int = 7860,
         timeout: int = 60,
-    ) -> "GovFormEnvClient":
+    ) -> "GovFormEnv":
         """Spin up a Docker container from the given image and return a client."""
         container_id = None
         try:
@@ -103,7 +103,7 @@ class GovFormEnvClient:
         )
 
     @classmethod
-    async def from_server_url(cls, url: str) -> "GovFormEnvClient":
+    async def from_server_url(cls, url: str) -> "GovFormEnv":
         """Connect to an already-running server."""
         client = cls(base_url=url)
         # Verify connectivity

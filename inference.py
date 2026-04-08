@@ -28,7 +28,7 @@ from typing import List, Optional
 
 from openai import OpenAI
 
-from govform_env import Action, GovFormEnvClient
+from govform_env import GovFormAction, GovFormEnv
 from govform_env.graders.task1_aadhaar import AadhaarGrader
 from govform_env.graders.task2_income import IncomeGrader
 from govform_env.graders.task3_passport import PassportGrader
@@ -175,7 +175,7 @@ def parse_action(raw: str) -> Optional[dict]:
 # ── Main Task Runner (Async) ─────────────────────────────────────────────
 
 
-async def run_task(task_id: str, env: GovFormEnvClient, llm_client: OpenAI) -> None:
+async def run_task(task_id: str, env: GovFormEnv, llm_client: OpenAI) -> None:
     max_steps = MAX_STEPS_MAP.get(task_id, 20)
     grader = GRADERS[task_id]
 
@@ -203,7 +203,7 @@ async def run_task(task_id: str, env: GovFormEnvClient, llm_client: OpenAI) -> N
                 log_step(step=step_num, action="invalid_json", reward=0.0, done=False, error="json_parse_failed")
                 continue
 
-            action = Action(
+            action = GovFormAction(
                 field_name=action_dict["field_name"],
                 value=str(action_dict["value"]),
                 reasoning=action_dict.get("reasoning"),
@@ -249,9 +249,9 @@ async def main() -> None:
 
     # Choose connection mode: Docker image or direct server URL
     if IMAGE_NAME:
-        env = await GovFormEnvClient.from_docker_image(IMAGE_NAME)
+        env = await GovFormEnv.from_docker_image(IMAGE_NAME)
     else:
-        env = await GovFormEnvClient.from_server_url(SERVER_URL)
+        env = await GovFormEnv.from_server_url(SERVER_URL)
 
     try:
         for task_id in TASKS:
