@@ -1,3 +1,13 @@
+---
+title: GovForm Assistant
+emoji: 🏛️
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # GovForm Assistant — OpenEnv Environment
 
 An AI agent fills Indian government forms correctly by interpreting free-text user inputs, mapping them to structured form fields, validating each field, detecting conflicts or missing data, and guiding the user toward a complete, valid submission.
