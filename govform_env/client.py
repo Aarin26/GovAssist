@@ -60,6 +60,20 @@ class GovFormEnv:
         timeout: int = 60,
     ) -> "GovFormEnv":
         """Spin up a Docker container from the given image and return a client."""
+        base_url = f"http://localhost:{port}"
+
+        # ── Step 0: Check if a server is ALREADY running on this port ──
+        # This is common in evaluators where the server might already be up.
+        try:
+            async with httpx.AsyncClient() as probe:
+                resp = await probe.get(f"{base_url}/health", timeout=2)
+                if resp.status_code == 200:
+                    # Server is already running. Reuse it.
+                    return cls(base_url=base_url)
+        except Exception:
+            pass
+
+        # ── Step 1: Try to start the container ──
         container_id = None
         try:
             result = subprocess.run(
@@ -79,7 +93,16 @@ class GovFormEnv:
                 "Install Docker: https://docs.docker.com/get-docker/"
             )
         except subprocess.CalledProcessError as e:
-            raise RuntimeError(f"Failed to start Docker container: {e.stderr}")
+            # If we still fail with port conflict or other issue, try one last check
+            # in case the server came up in the meantime.
+            try:
+                async with httpx.AsyncClient() as probe:
+                    resp = await probe.get(f"{base_url}/health", timeout=5)
+                    if resp.status_code == 200:
+                        return cls(base_url=base_url)
+            except Exception:
+                pass
+            raise RuntimeError(f"Failed to start Docker container (exit {e.returncode}): {e.stderr or e.stdout}")
 
         base_url = f"http://localhost:{port}"
         client = cls(base_url=base_url, container_id=container_id)
